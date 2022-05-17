@@ -1,29 +1,27 @@
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import sessoes from "./shared/sessoes";
+import TopSelect from "./TopSelect";
 
-
-
-
-function Schedule ({weekday, date, showtimes, id, setIdSetion }) {
+function Schedule ({weekday, date, showtimes, id, setIdSetion, addColor }) {
     return (
         <div className="days">
             <p>{weekday} - {date}</p>
             <div className="showtime">
-                {showtimes.map((hour, index) => <Link to={`/assentos/${id}`} ><div key={index} className="time" onClick={() => setIdSetion(id)}>{hour.name}</div></Link>)}
+                {showtimes.map((hour, index) => <Link className="text-link" to={`/assentos/${id}`} key={index}><div  className="time" onClick={() => (setIdSetion(id), addColor())}>{hour.name}</div></Link>)}
             </div>
         </div>
     );
 }
 
-export default function Sections({ idPoster, setIdSetion }) {
+export default function Sections({ idPoster, setIdSetion, addColor }) {
     return (
         <>
-            <div className="topSections">
+            <TopSelect>
                 <p>Selecione o horário</p>
-            </div>
+            </TopSelect>
 
-            {sessoes.days.map((sect, index) => <Schedule key={index} weekday={sect.weekday} date={sect.date} showtimes={sect.showtimes} id={sect.id} setIdSetion={setIdSetion}/>)}
+            {sessoes.days.map((sect, index) => <Schedule key={index} weekday={sect.weekday} date={sect.date} showtimes={sect.showtimes} id={sect.id} setIdSetion={setIdSetion} addColor={addColor} />)}
 
             <Footer>
                 <div className="imgFooter">

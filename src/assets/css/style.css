@@ -22,18 +22,16 @@ body {
     color: #E8833A;
 }
 
-.topMovies,
-.topSections {
+.topSelect {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 67px;
+    margin: 67px auto 0 auto;
     height: 110px;
-    width: 100%;
+
 }
 
-.topMovies>p,
-.topSections>p {
+.topSelect>p {
     font-size: 24px;
     color: #293845;
 }
@@ -84,6 +82,7 @@ body {
 .days>p {
     font-size: 20px;
     color: #293845;
+    margin-bottom: 5px;
 }
 
 .showtime {
@@ -102,6 +101,12 @@ body {
     border-radius: 3px;
     margin-right: 10px;
     color: white;
+
+}
+
+.text-link {
+    color: inherit;
+    text-decoration: inherit;
 }
 
 .time:last-child {
@@ -120,7 +125,119 @@ body {
     padding: 8px;
 }
 
-.footer > p{
+.footer>p {
     margin-left: 85px;
     font-size: 26px;
+}
+
+.sits {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100hw;
+    justify-content: space-around;
+    padding: 0 24px;
+}
+
+.sits>.unvailable,
+.sits>.available,
+.sits>.selected {
+    width: 26px;
+    height: 26px;
+    background-color: #C3CFD9;
+    border: 1px solid #808F9D;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 6px 3px;
+}
+
+.sits>.unvailable {
+    background-color: #F7C52B;
+    border: 1px solid #F7C52B;
+}
+
+.sits>.selected {
+    background-color: #8DD7CF;
+    border: 1px solid #45BDB0;
+}
+
+.subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.subtitle>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 12px;
+}
+
+.sitSelected {
+    width: 25px;
+    height: 25px;
+    border-radius: 17px;
+    background-color: #8DD7CF;
+    border: 1px solid #45BDB0;
+    margin-bottom: 8px;
+}
+
+.sitAvailable {
+    width: 25px;
+    height: 25px;
+    border-radius: 17px;
+    background-color: #C3CFD9;
+    border: 1px solid #808F9D;
+    margin-bottom: 8px;
+}
+
+.sitUnvailable {
+    width: 25px;
+    height: 25px;
+    border-radius: 17px;
+    background-color: #F7C52B;
+    border: 1px solid #F7C52B;
+    margin-bottom: 8px;
+}
+
+.forms {
+    margin: 25px 35px 0 24px;
+}
+
+.forms p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.forms input {
+    width: 100%;
+    height: 50px;
+    background: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    border-radius: 3px;
+
+}
+
+::placeholder {
+    font-size: 18px;
+    font-style: italic;
+    color: #AFAFAF;
+    padding-left: 15px;
+}
+
+.button {
+    width: 225px;
+    height: 42px;
+    background: #E8833A;
+    border-radius: 3px;
+    margin: 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
 }
