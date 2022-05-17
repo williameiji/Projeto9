@@ -4,11 +4,10 @@ import listaFilmes from "./shared/lista-filmes";
 function Posters ({posterImg, idPoster, setIdPoster}) {
     return (
             <div className="posters">
-                <Link to="/contato"><img className="imgPoster" src={posterImg} alt="" onClick={() => setIdPoster(idPoster)}/></Link>
+                <Link to={`/sessoes/${idPoster}`}><img className="imgPoster" src={posterImg} alt="" onClick={() => setIdPoster(idPoster)}/></Link>
             </div>
     );
 }
-
 
 export default function Movies ({setIdPoster}) {
     return (
