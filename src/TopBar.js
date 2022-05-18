@@ -1,7 +1,7 @@
-export default function TopBar() {
+export default function TopBar(props) {
     return (
         <div className="topBar">
-            <p>CINEFLEX</p>
+            {props.children}
         </div>
     );
 }

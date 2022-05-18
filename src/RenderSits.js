@@ -1,8 +1,9 @@
 import React from "react";
 
-export default function RenderSits({ sitSelected, setSitSelected, setIdSeat, idSeat }) {
+
+export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSeats }) {
     function selected(id) {
-        let select = sitSelected.map((value, index) => {
+        let seats = renderSeats.seats.map((value, index) => {
             if (index === id && value.class === "unvailable") {
                 alert("Esse assento não está disponível.");
                 return {
@@ -34,13 +35,13 @@ export default function RenderSits({ sitSelected, setSitSelected, setIdSeat, idS
                 }
             }
         });
-        setSitSelected(select);
+        setRenderSeats({ ...renderSeats, seats });
     }
 
     return (
         <>
             <div className="sits">
-                {sitSelected.map((value, index) => <div key={index} className={value.class} onClick={() => selected((value.id - 1))}>{value.name}</div>)}
+                {renderSeats.seats.map((value, index) => <div key={index} className={value.class} onClick={() => selected((Number(value.name) - 1))}>{value.name}</div>)}
             </div>
         </>
     );
