@@ -11,27 +11,9 @@ import TopBar from "./TopBar";
 export default function App() {
     const [sitSelected, setSitSelected] = React.useState();
     const [idSeat, setIdSeat] = React.useState([]);
-    const [name, setName] = React.useState("");
-    const [cpf, setCpf] = React.useState("");
     const [section, setSection] = React.useState();
 
     console.log(idSeat)
-    // function addColor() {
-    //     let sit = sits.seats.map(value => {
-    //         if (value.isAvailable === false) {
-    //             return {
-    //                 ...value,
-    //                 "class": "unvailable"
-    //             }
-    //         } else {
-    //             return {
-    //                 ...value,
-    //                 "class": "available"
-    //             }
-    //         }
-    //     });
-    //     setSitSelected(sit);
-    // }
 
     return (
         <BrowserRouter>
@@ -44,8 +26,6 @@ export default function App() {
                     setSitSelected={setSitSelected}
                     setIdSeat={setIdSeat}
                     idSeat={idSeat}
-                    setCpf={setCpf}
-                    setName={setName}
                     section={section}
                 />} />
             </Routes>

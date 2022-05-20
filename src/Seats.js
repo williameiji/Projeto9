@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import Footer from "./Footer";
 import RenderSits from "./RenderSits";
 import TopSelect from "./TopSelect";
@@ -9,18 +10,18 @@ import TopBar from "./TopBar";
 import loading from "../src/assets/image/loading.gif";
 
 
-function Forms({ setCpf, setName }) {
+function Forms({ getInputCpf, getInputName, id, addName, addCpf }) {
     return (
         <div className="forms">
             <p>Nome do comprador:</p>
-            <input type="text" placeholder="Digite seu nome..." onInput={e => setName(e.target.value)}></input>
+            <input type="text" placeholder="Digite seu nome..."  onChange={(e) => getInputName(e.target.value, id)}></input>
             <p>CPF do comprador:</p>
-            <input type="text" placeholder="Digite seu CPF..." maxLength="11" onInput={e => setCpf(e.target.value)}></input>
+            <input type="text" placeholder="Digite seu CPF..."  maxLength="11" onChange={getInputCpf} ></input>
         </div>
     );
 }
 
-export default function Seats({ setIdSeat, idSeat, setCpf, setName, section }) {
+export default function Seats({ setIdSeat, idSeat, section }) {
     let history = useNavigate();
 
     function handleClick() {
@@ -31,6 +32,43 @@ export default function Seats({ setIdSeat, idSeat, setCpf, setName, section }) {
     const { idSeats } = useParams();
     const [renderSeats, setRenderSeats] = useState({});
     const [waiting, setWaiting] = useState(false);
+    const [name, setName] = React.useState([]);
+    const [cpf, setCpf] = React.useState([]);
+
+    let cpfTemp = {}
+    const getInputCpf = (e) => {
+        const value = e.target.value;
+        cpfTemp ={"cpf" :value};
+    }
+    
+    function addCpf (){
+        if(cpfTemp.cpf.length === 11 && !isNaN(Number(cpfTemp.cpf))){
+            setCpf([...cpf, [cpfTemp]])
+        }else{
+            alert("CPF incorreto! Digite somento números");
+        }
+    }
+
+    let nameTemp ={};
+
+    function getInputName (e, id) {
+        console.log(id);
+        const value = e;
+        console.log(value)
+        nameTemp[id] = {["nome"]:value }
+    }
+
+    function addName(){
+        setName([...name, nameTemp]);
+    }
+
+    console.log(name);
+
+
+    function button () {
+
+    }
+
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`);
@@ -64,15 +102,15 @@ export default function Seats({ setIdSeat, idSeat, setCpf, setName, section }) {
                 <p className="topSelect">Selecione o(s) assento(s)</p>
             </TopSelect>
 
-            {!waiting ? <img className="loading" src={loading} alt=""/> :
+            {!waiting ? <img className="loading" src={loading} alt="" /> :
                 <>
                     <RenderSits setIdSeat={setIdSeat} idSeat={idSeat} renderSeats={renderSeats} setRenderSeats={setRenderSeats} />
 
                     <SubtitleColor />
 
-                    {idSeat.map((value, index) => <Forms key={index} setCpf={setCpf} setName={setName} />)}
+                    {idSeat.map((value, index) => <Forms key={index} id={index} getInputCpf={getInputCpf} getInputName={getInputName} addName={addName} addCpf={addCpf} />)}
 
-                    {!idSeat.length ? null : <div className="button">{`Reservar assento(s)`}</div>}
+                    {!idSeat.length ? null : <div className="button" onClick={button}>{`Reservar assento(s)`}</div>}
 
                     <Footer>
                         <div className="imgFooter">

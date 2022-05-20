@@ -2,7 +2,7 @@ import React from "react";
 
 
 export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSeats }) {
-    function selected(id) {
+    function selected(id, idBuyers) {
         let seats = renderSeats.seats.map((value, index) => {
             if (index === id && value.class === "unvailable") {
                 alert("Esse assento não está disponível.");
@@ -11,14 +11,18 @@ export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSe
                 }
             }
             if (index === id && value.class === "selected") {
-                idSeat.pop()
+                for(let i = 0; i < idSeat.length; i++){
+                    if(idSeat[i] === idBuyers){
+                        idSeat.splice(i, 1);
+                    }
+                }
                 return {
                     ...value,
                     "class": "available",
                 }
             }
             if (index === id && value.class !== "selected") {
-                setIdSeat([...idSeat, index]);
+                setIdSeat([...idSeat, idBuyers]);
                 return {
                     ...value,
                     "class": "selected",
@@ -41,7 +45,7 @@ export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSe
     return (
         <>
             <div className="sits">
-                {renderSeats.seats.map((value, index) => <div key={index} className={value.class} onClick={() => selected((Number(value.name) - 1))}>{value.name}</div>)}
+                {renderSeats.seats.map((value, index) => <div key={index} className={value.class} onClick={() => selected(Number(value.name) - 1, value.id)}>{value.name}</div>)}
             </div>
         </>
     );
