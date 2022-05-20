@@ -5,26 +5,29 @@ import RenderSits from "./RenderSits";
 import TopSelect from "./TopSelect";
 import SubtitleColor from "./SubtitleColor";
 import axios from "axios";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import TopBar from "./TopBar";
 import loading from "../src/assets/image/loading.gif";
+import styled from "styled-components";
 
 function Forms({ data, handleForm }) {
     return (
-        <div className="forms">
-            <label>Nome do comprador:</label>
-            <input type="text" name="name" placeholder="Digite seu nome..." onChange={handleForm} value={data}></input>
-            <label>CPF do comprador:</label>
-            <input type="text" name="cpf" placeholder="Digite seu CPF..." maxLength="11" onChange={handleForm} value={data} required onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                    event.preventDefault();
-                }
-            }} ></input>
-        </div>
+        <FormsI>
+            <div className="forms">
+                <p>Nome do comprador:</p>
+                <input type="text" name="name" placeholder="Digite seu nome..." onChange={handleForm} value={data}></input>
+                <p>CPF do comprador:</p>
+                <input type="text" name="cpf" placeholder="Digite seu CPF..." maxLength="11" onChange={handleForm} value={data} required onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                    }
+                }} ></input>
+            </div>
+        </FormsI>
     );
 }
 
-export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, renderSeats, setData, data, setNumSeats, numSeats, setCpfNovo }) {
+export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, renderSeats, setData, data, setNumSeats, numSeats }) {
     let history = useNavigate();
 
     function handleClick() {
@@ -48,17 +51,8 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
             let promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", data);
             promise.then(response => {
                 history("/sucesso");
-                printCPF(data.cpf)
             })
         }
-    }
-
-    function printCPF(cpf) {
-        cpf = cpf.replace(/\D/g, "");
-        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
-        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
-        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-        setCpfNovo(cpf);
     }
 
     useEffect(() => {
@@ -85,7 +79,7 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
     return (
         <>
             <TopBar>
-                <div className="buttonBack" onClick={() => handleClick(idSeat)}>Voltar</div>
+                <ButtonBack onClick={() => handleClick(idSeat)}>Voltar</ButtonBack>
                 <p>CINEFLEX</p>
             </TopBar>
 
@@ -99,18 +93,14 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
 
                     <SubtitleColor />
 
-                    {/* {idSeat.map((value, index) => <form key={index}><Forms  id={value} data={data} handleForm={handleForm} /></form>)} */}
-
                     <Forms handleForm={handleForm} />
 
-                    {/* {!idSeat.length ? null : <div className="button">{`Reservar assento(s)`}</div>} */}
-
-                    <div className="button" onClick={submit}>{`Reservar assento(s)`}</div>
+                    <Button onClick={submit}>{`Reservar assento(s)`}</Button>
 
                     <Footer>
-                        <div className="imgFooter">
-                            <img className="imgPoster" src={renderSeats.movie.posterURL} alt="" />
-                        </div>
+                        <ImgFooter>
+                            <ImgPoster src={renderSeats.movie.posterURL} alt="" />
+                        </ImgFooter>
                         <p>{renderSeats.movie.title}</p>
                         <p>{renderSeats.day.weekday} - {renderSeats.name}</p>
                     </Footer>
@@ -118,3 +108,66 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
         </>
     );
 }
+
+const FormsI = styled.form`
+    margin: 25px 35px 0 24px;
+
+    label {
+        font-size: 18px;
+    }
+
+    input {
+        width: 100%;
+        height: 50px;
+        background: #FFFFFF;
+        border: 1px solid #D5D5D5;
+        border-radius: 3px;
+        padding-left: 15px;
+        margin: 5px 0;
+
+        ::placeholder {
+            font-size: 18px;
+            font-style: italic;
+            color: #AFAFAF;
+            padding-left: 15px;
+        }
+    }
+`;
+
+const Button = styled.div`
+    width: 225px;
+    height: 42px;
+    background: #E8833A;
+    border-radius: 3px;
+    margin: 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    margin-bottom: 130px;
+`;
+
+const ImgPoster = styled.img`
+    width: 100%;
+    height: 100%;
+`;
+
+const ImgFooter = styled.div`
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    width: 64px;
+    height: 89px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    padding: 8px;
+`;
+
+const ButtonBack = styled.div`
+    position: fixed;
+    top: 25px;
+    left: 15px;
+    color: red;
+`;

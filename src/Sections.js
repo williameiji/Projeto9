@@ -5,15 +5,16 @@ import TopSelect from "./TopSelect";
 import axios from "axios";
 import loading from "../src/assets/image/loading.gif";
 import TopBar from "./TopBar";
+import styled from "styled-components";
 
 function Schedule({ weekday, date, showtimes }) {
     return (
-        <div className="days">
+        <Days>
             <p>{weekday} - {date}</p>
-            <div className="showtime">
-                {showtimes.map((hour, index) => <Link className="text-link" to={`/assentos/${hour.id}`} key={index}><div className="time" >{hour.name}</div></Link>)}
-            </div>
-        </div>
+            <Showtime>
+                {showtimes.map((hour, index) => <Link style={{ textDecoration: 'none' }} to={`/assentos/${hour.id}`} key={index}><Time >{hour.name}</Time></Link>)}
+            </Showtime>
+        </Days>
     );
 }
 
@@ -38,7 +39,7 @@ export default function Sections({ setSection }) {
     return (
         <>
             <TopBar>
-                <div className="buttonBack" onClick={handleClick}>Voltar</div>
+                <ButtonBack onClick={handleClick}>Voltar</ButtonBack>
                 <p>CINEFLEX</p>
             </TopBar>
 
@@ -49,11 +50,68 @@ export default function Sections({ setSection }) {
             {!sections.days ? <img className="loading" src={loading} alt="" /> : sections.days.map((sect, index) => <Schedule key={index} weekday={sect.weekday} date={sect.date} showtimes={sect.showtimes} />)}
 
             <Footer>
-                <div className="imgFooter">
-                    <img className="imgPoster" src={sections.posterURL} alt="" />
-                </div>
+                <ImgFooter>
+                    <ImgPoster src={sections.posterURL} alt="" />
+                </ImgFooter>
                 <p>{sections.title}</p>
             </Footer>
         </>
     );
 }
+
+const Days = styled.div`
+    height: 70px;
+    padding: 25px;
+
+    p {
+        font-size: 20px;
+        color: #293845;
+        margin-bottom: 5px;
+    }
+`;
+
+const Time = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 83px;
+    height: 43px;
+    background-color: #E8833A;
+    border-radius: 3px;
+    margin-right: 10px;
+    color: white;
+
+    :last-child {
+        margin-bottom: 140px;
+    }
+`;
+
+const Showtime = styled.div`
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
+`;
+
+const ImgPoster = styled.img`
+    width: 100%;
+    height: 100%;
+`;
+
+const ButtonBack = styled.div`
+    position: fixed;
+    top: 25px;
+    left: 15px;
+    color: red;
+`;
+
+const ImgFooter = styled.div`
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    width: 64px;
+    height: 89px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    padding: 8px;
+`;

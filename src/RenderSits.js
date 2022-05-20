@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSeats, setNumSeats, numSeats }) {
     function selected(id, idBuyers) {
@@ -51,3 +52,6 @@ export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSe
         </>
     );
 }
+
+
+

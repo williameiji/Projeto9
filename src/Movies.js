@@ -4,12 +4,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import TopBar from "./TopBar";
 import loading from "../src/assets/image/loading.gif";
+import styled from "styled-components";
 
 function Posters({ posterImg, idPoster, }) {
     return (
-        <div className="posters">
-            <Link to={`/sessoes/${idPoster}`}><img className="imgPoster" src={posterImg} alt="" /></Link>
-        </div>
+        <PostersMovies>
+            <Link to={`/sessoes/${idPoster}`}><ImgPoster src={posterImg} alt="" /></Link>
+        </PostersMovies>
     );
 }
 
@@ -33,9 +34,33 @@ export default function Movies() {
                 <p>Selecione o filme</p>
             </TopSelect>
 
-            <div className="bodyMovies">
+            <BodyMovies>
                 {!listMovies.length ? <img className="loading" src={loading} alt="" /> : listMovies.map((img, index) => <Posters key={index} posterImg={img.posterURL} idPoster={img.id} />)}
-            </div>
+            </BodyMovies>
         </>
     );
 }
+
+const BodyMovies = styled.div`
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0 25px 0 25px;
+`;
+
+const PostersMovies = styled.div`
+    width: 145px;
+    height: 209px;
+    left: 30px;
+    top: 169px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    margin-bottom: 20px;
+    padding: 5px;
+`;
+
+const ImgPoster = styled.img`
+    width: 100%;
+    height: 100%;
+`;
