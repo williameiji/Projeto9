@@ -22,7 +22,7 @@ export default function Movies() {
             setListMovies(response.data);
         })
     }, []);
- 
+
     return (
         <>
             <TopBar>
@@ -34,9 +34,8 @@ export default function Movies() {
             </TopSelect>
 
             <div className="bodyMovies">
-                {!listMovies.length ? <img className="loading" src={loading} alt=""/> : listMovies.map((img, index) => <Posters key={index} posterImg={img.posterURL} idPoster={img.id} />)}
+                {!listMovies.length ? <img className="loading" src={loading} alt="" /> : listMovies.map((img, index) => <Posters key={index} posterImg={img.posterURL} idPoster={img.id} />)}
             </div>
-
         </>
     );
 }

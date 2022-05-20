@@ -6,7 +6,6 @@ import axios from "axios";
 import loading from "../src/assets/image/loading.gif";
 import TopBar from "./TopBar";
 
-
 function Schedule({ weekday, date, showtimes }) {
     return (
         <div className="days">
@@ -27,13 +26,12 @@ export default function Sections({ setSection }) {
 
     const { idSection } = useParams();
     const [sections, setSections] = useState({});
-    
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idSection}/showtimes`);
         promise.then(response => {
             setSections(response.data);
-            setSection(idSection)
+            setSection(idSection);
         })
     }, []);
 
@@ -48,7 +46,7 @@ export default function Sections({ setSection }) {
                 <p>Selecione o horário</p>
             </TopSelect>
 
-            {!sections.days ? <img className="loading" src={loading} alt=""/> : sections.days.map((sect, index) => <Schedule key={index} weekday={sect.weekday} date={sect.date} showtimes={sect.showtimes} />)}
+            {!sections.days ? <img className="loading" src={loading} alt="" /> : sections.days.map((sect, index) => <Schedule key={index} weekday={sect.weekday} date={sect.date} showtimes={sect.showtimes} />)}
 
             <Footer>
                 <div className="imgFooter">

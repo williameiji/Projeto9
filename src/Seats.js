@@ -5,23 +5,30 @@ import RenderSits from "./RenderSits";
 import TopSelect from "./TopSelect";
 import SubtitleColor from "./SubtitleColor";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import TopBar from "./TopBar";
 import loading from "../src/assets/image/loading.gif";
+import Finished from "./Finished";
 
 
-function Forms({ getInputCpf, getInputName, id, addName, addCpf }) {
+function Forms({ data, handleForm }) {
     return (
-        <div className="forms">
-            <p>Nome do comprador:</p>
-            <input type="text" placeholder="Digite seu nome..."  onChange={(e) => getInputName(e.target.value, id)}></input>
-            <p>CPF do comprador:</p>
-            <input type="text" placeholder="Digite seu CPF..."  maxLength="11" onChange={getInputCpf} ></input>
-        </div>
+        <form>
+            <div className="forms">
+                <p>Nome do comprador:</p>
+                <input type="text" name="name" placeholder="Digite seu nome..." onChange={handleForm} value={data}></input>
+                <p>CPF do comprador:</p>
+                <input type="text" name="cpf" placeholder="Digite seu CPF..." maxLength="11" onChange={handleForm} value={data} required onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                    }
+                }} ></input>
+            </div>
+        </form>
     );
 }
 
-export default function Seats({ setIdSeat, idSeat, section }) {
+export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, renderSeats, setData, data, setNumSeats, numSeats }) {
     let history = useNavigate();
 
     function handleClick() {
@@ -30,45 +37,24 @@ export default function Seats({ setIdSeat, idSeat, section }) {
     }
 
     const { idSeats } = useParams();
-    const [renderSeats, setRenderSeats] = useState({});
     const [waiting, setWaiting] = useState(false);
-    const [name, setName] = React.useState([]);
-    const [cpf, setCpf] = React.useState([]);
 
-    let cpfTemp = {}
-    const getInputCpf = (e) => {
-        const value = e.target.value;
-        cpfTemp ={"cpf" :value};
+    function handleForm(e) {
+        setData({
+            ...data,
+            ids: idSeat,
+            [e.target.name]: e.target.value,
+        });
     }
-    
-    function addCpf (){
-        if(cpfTemp.cpf.length === 11 && !isNaN(Number(cpfTemp.cpf))){
-            setCpf([...cpf, [cpfTemp]])
-        }else{
-            alert("CPF incorreto! Digite somento números");
+
+    function submit() {
+        if (data.cpf.length === 11 && data.name.length > 0) {
+            let promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", data);
+            promise.then(response => {
+                history("/sucesso");
+            })
         }
     }
-
-    let nameTemp ={};
-
-    function getInputName (e, id) {
-        console.log(id);
-        const value = e;
-        console.log(value)
-        nameTemp[id] = {["nome"]:value }
-    }
-
-    function addName(){
-        setName([...name, nameTemp]);
-    }
-
-    console.log(name);
-
-
-    function button () {
-
-    }
-
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSeats}/seats`);
@@ -94,7 +80,7 @@ export default function Seats({ setIdSeat, idSeat, section }) {
     return (
         <>
             <TopBar>
-                <div className="buttonBack" onClick={handleClick}>Voltar</div>
+                <div className="buttonBack" onClick={() => handleClick(idSeat)}>Voltar</div>
                 <p>CINEFLEX</p>
             </TopBar>
 
@@ -104,13 +90,17 @@ export default function Seats({ setIdSeat, idSeat, section }) {
 
             {!waiting ? <img className="loading" src={loading} alt="" /> :
                 <>
-                    <RenderSits setIdSeat={setIdSeat} idSeat={idSeat} renderSeats={renderSeats} setRenderSeats={setRenderSeats} />
+                    <RenderSits setIdSeat={setIdSeat} idSeat={idSeat} renderSeats={renderSeats} setRenderSeats={setRenderSeats} setNumSeats={setNumSeats} numSeats={numSeats} />
 
                     <SubtitleColor />
 
-                    {idSeat.map((value, index) => <Forms key={index} id={index} getInputCpf={getInputCpf} getInputName={getInputName} addName={addName} addCpf={addCpf} />)}
+                    {/* {idSeat.map((value, index) => <Forms key={index} id={value} data={data} handleForm={handleForm} />)} */}
 
-                    {!idSeat.length ? null : <div className="button" onClick={button}>{`Reservar assento(s)`}</div>}
+                    <Forms handleForm={handleForm} />
+
+                    {/* {!idSeat.length ? null : <div className="button">{`Reservar assento(s)`}</div>} */}
+
+                    <div className="button" onClick={submit}>{`Reservar assento(s)`}</div>
 
                     <Footer>
                         <div className="imgFooter">

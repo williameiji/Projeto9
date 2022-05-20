@@ -6,14 +6,20 @@ import Movies from "./Movies";
 import Sections from "./Sections";
 import Seats from "./Seats";
 import TopBar from "./TopBar";
+import Finished from "./Finished";
 
 
 export default function App() {
     const [sitSelected, setSitSelected] = React.useState();
     const [idSeat, setIdSeat] = React.useState([]);
     const [section, setSection] = React.useState();
-
-    console.log(idSeat)
+    const [renderSeats, setRenderSeats] = React.useState({});
+    const [numSeats, setNumSeats] = React.useState([]);
+    const [data, setData] = React.useState({
+        ids: idSeat,
+        name: "",
+        cpf: "",
+    });
 
     return (
         <BrowserRouter>
@@ -27,6 +33,18 @@ export default function App() {
                     setIdSeat={setIdSeat}
                     idSeat={idSeat}
                     section={section}
+                    setRenderSeats={setRenderSeats}
+                    renderSeats={renderSeats}
+                    setData={setData}
+                    data={data}
+                    setNumSeats={setNumSeats}
+                    numSeats={numSeats}
+                />} />
+                <Route path="/sucesso" element={<Finished
+                    renderSeats={renderSeats}
+                    data={data} numSeats={numSeats}
+                    setIdSeat={setIdSeat}
+                    setNumSeats={setNumSeats}
                 />} />
             </Routes>
         </BrowserRouter>
