@@ -8,27 +8,23 @@ import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import TopBar from "./TopBar";
 import loading from "../src/assets/image/loading.gif";
-import Finished from "./Finished";
-
 
 function Forms({ data, handleForm }) {
     return (
-        <form>
-            <div className="forms">
-                <p>Nome do comprador:</p>
-                <input type="text" name="name" placeholder="Digite seu nome..." onChange={handleForm} value={data}></input>
-                <p>CPF do comprador:</p>
-                <input type="text" name="cpf" placeholder="Digite seu CPF..." maxLength="11" onChange={handleForm} value={data} required onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
-                    }
-                }} ></input>
-            </div>
-        </form>
+        <div className="forms">
+            <label>Nome do comprador:</label>
+            <input type="text" name="name" placeholder="Digite seu nome..." onChange={handleForm} value={data}></input>
+            <label>CPF do comprador:</label>
+            <input type="text" name="cpf" placeholder="Digite seu CPF..." maxLength="11" onChange={handleForm} value={data} required onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                }
+            }} ></input>
+        </div>
     );
 }
 
-export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, renderSeats, setData, data, setNumSeats, numSeats }) {
+export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, renderSeats, setData, data, setNumSeats, numSeats, setCpfNovo }) {
     let history = useNavigate();
 
     function handleClick() {
@@ -52,8 +48,17 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
             let promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", data);
             promise.then(response => {
                 history("/sucesso");
+                printCPF(data.cpf)
             })
         }
+    }
+
+    function printCPF(cpf) {
+        cpf = cpf.replace(/\D/g, "");
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        setCpfNovo(cpf);
     }
 
     useEffect(() => {
@@ -94,7 +99,7 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
 
                     <SubtitleColor />
 
-                    {/* {idSeat.map((value, index) => <Forms key={index} id={value} data={data} handleForm={handleForm} />)} */}
+                    {/* {idSeat.map((value, index) => <form key={index}><Forms  id={value} data={data} handleForm={handleForm} /></form>)} */}
 
                     <Forms handleForm={handleForm} />
 

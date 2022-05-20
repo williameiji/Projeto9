@@ -15,6 +15,7 @@ export default function App() {
     const [section, setSection] = React.useState();
     const [renderSeats, setRenderSeats] = React.useState({});
     const [numSeats, setNumSeats] = React.useState([]);
+    const [cpfNovo, setCpfNovo] = React.useState("");
     const [data, setData] = React.useState({
         ids: idSeat,
         name: "",
@@ -39,12 +40,14 @@ export default function App() {
                     data={data}
                     setNumSeats={setNumSeats}
                     numSeats={numSeats}
+                    setCpfNovo={setCpfNovo}
                 />} />
                 <Route path="/sucesso" element={<Finished
                     renderSeats={renderSeats}
                     data={data} numSeats={numSeats}
                     setIdSeat={setIdSeat}
                     setNumSeats={setNumSeats}
+                    cpfNovo={cpfNovo}
                 />} />
             </Routes>
         </BrowserRouter>

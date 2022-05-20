@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import React from "react";
 import TopBar from "./TopBar";
 import TopSelect from "./TopSelect";
 import { useNavigate } from "react-router-dom";
 
-export default function Finished({ renderSeats, data, numSeats, setIdSeat, setNumSeats }) {
+export default function Finished({ renderSeats, data, numSeats, setIdSeat, setNumSeats,cpfNovo }) {
     let history = useNavigate();
 
     function handleClick() {
@@ -32,7 +33,7 @@ export default function Finished({ renderSeats, data, numSeats, setIdSeat, setNu
             <Infos>
                 <p>Comprador</p>
                 <p>Nome: {data.name}</p>
-                <p>CPF: {data.cpf}</p>
+                <p>CPF: {cpfNovo}</p>
             </Infos>
             <div className="button" onClick={handleClick}>Voltar para Home</div>
         </>
