@@ -1,7 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 
-export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSeats, setNumSeats, numSeats }) {
+export default function RenderSits({ setIdSeat, confirmRemove, idSeat, renderSeats, setRenderSeats, setNumSeats, numSeats, addFields }) {
     function selected(id, idBuyers) {
         let seats = renderSeats.seats.map((value, index) => {
             if (index === id && value.class === "unvailable") {
@@ -15,6 +14,7 @@ export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSe
                     if (idSeat[i] === idBuyers) {
                         idSeat.splice(i, 1);
                         numSeats.splice(i, 1);
+                        confirmRemove(i);
                     }
                 }
                 return {
@@ -23,6 +23,7 @@ export default function RenderSits({ setIdSeat, idSeat, renderSeats, setRenderSe
                 }
             }
             if (index === id && value.class !== "selected") {
+                addFields();
                 setIdSeat([...idSeat, idBuyers]);
                 setNumSeats([...numSeats, value.name]);
                 return {

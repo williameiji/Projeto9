@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import TopSelect from "./TopSelect";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import TopBar from "./TopBar";
-import loading from "../src/assets/image/loading.gif";
+import axios from "axios";
 import styled from "styled-components";
+import TopSelect from "./TopSelect";
+import TopBar from "./TopBar";
+import loading from "../assets/image/loading.gif";
 
 function Posters({ posterImg, idPoster, }) {
     return (
@@ -21,7 +21,7 @@ export default function Movies() {
         const promise = axios.get("https://mock-api.driven.com.br/api/v5/cineflex/movies");
         promise.then(response => {
             setListMovies(response.data);
-        })
+        });
     }, []);
 
     return (

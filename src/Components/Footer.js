@@ -3,7 +3,6 @@ import styled from "styled-components";
 export default function Footer (props) {
     return (
         <FooterF className="footer">
-            
             {props.children}
         </FooterF>
     );

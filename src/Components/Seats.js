@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import React from "react";
+import styled from "styled-components";
+import axios from "axios";
 import Footer from "./Footer";
 import RenderSits from "./RenderSits";
 import TopSelect from "./TopSelect";
 import SubtitleColor from "./SubtitleColor";
-import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
 import TopBar from "./TopBar";
-import loading from "../src/assets/image/loading.gif";
-import styled from "styled-components";
+import loading from "../assets/image/loading.gif";
 
-function Forms({ data, handleForm }) {
+function Forms({ input, index, handleFormChange, submit }) {
     return (
-        <FormsI>
+        <FormsI onSubmit={submit}>
             <div className="forms">
                 <p>Nome do comprador:</p>
-                <input type="text" name="name" placeholder="Digite seu nome..." onChange={handleForm} value={data}></input>
+                <input type="text" name="name" placeholder="Digite seu nome..." onChange={(e) => handleFormChange(index, e)} value={input.name} required></input>
                 <p>CPF do comprador:</p>
-                <input type="text" name="cpf" placeholder="Digite seu CPF..." maxLength="11" onChange={handleForm} value={data} required onKeyPress={(event) => {
+                <input type="text" name="cpf" placeholder="Digite seu CPF..." maxLength="11" onChange={(e) => handleFormChange(index, e)} value={input.cpf} required onKeyPress={(event) => {
                     if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
                     }
@@ -27,7 +27,7 @@ function Forms({ data, handleForm }) {
     );
 }
 
-export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, renderSeats, setData, data, setNumSeats, numSeats }) {
+export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, renderSeats, setInputFields, inputFields, setNumSeats, numSeats, cpfNovo }) {
     let history = useNavigate();
 
     function handleClick() {
@@ -37,22 +37,66 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
 
     const { idSeats } = useParams();
     const [waiting, setWaiting] = useState(false);
+    
 
-    function handleForm(e) {
-        setData({
-            ...data,
-            ids: idSeat,
-            [e.target.name]: e.target.value,
-        });
+    function handleFormChange (index, e) {
+        let data = [...inputFields];
+        data[index][e.target.name] = e.target.value;
+        setInputFields(data);
+    }
+
+    function addFields () {
+        let newfield = { name: '', cpf: '' }
+        setInputFields([...inputFields, newfield]);
+    }
+
+    function removeFields (index) {
+        let data = [...inputFields];
+        data.splice(index, 1);
+        setInputFields(data);
+    }
+
+    function confirmRemove(index) {
+        for (let i = 0; i < inputFields.length; i++) {
+            if (inputFields[i].name.length > 0 || inputFields[i].cpf.length > 0) {
+                if (window.confirm("Deseja remover esse assento?") === true) {
+                    removeFields(index);
+                }
+            }
+        }
     }
 
     function submit() {
-        if (data.cpf.length === 11 && data.name.length > 0) {
-            let promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", data);
-            promise.then(response => {
-                history("/sucesso");
-            })
+        let config = {
+            ids: idSeat,
+            compradores: []
         }
+        for (let i = 0; i < inputFields.length; i++) {
+            let temp = {};
+            if (inputFields[i].cpf.length === 11 && inputFields[i].name.length > 0) {
+                temp = {
+                    idAssento: idSeat[i],
+                    name: inputFields[i].name,
+                    cpf: inputFields[i].cpf
+                }
+
+                let cpf = inputFields[i].cpf;
+                cpf=cpf.replace(/\D/g,"");
+                cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2");
+                cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2");
+                cpf=cpf.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+                cpfNovo.push(cpf);
+
+                config.compradores.push(temp);
+            } else {
+                alert('Dados incorretos!');
+            }
+        }
+        
+        let promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", config);
+        promise.then(response => {
+            history("/sucesso");
+        });
     }
 
     useEffect(() => {
@@ -89,13 +133,13 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
 
             {!waiting ? <img className="loading" src={loading} alt="" /> :
                 <>
-                    <RenderSits setIdSeat={setIdSeat} idSeat={idSeat} renderSeats={renderSeats} setRenderSeats={setRenderSeats} setNumSeats={setNumSeats} numSeats={numSeats} />
+                    <RenderSits setIdSeat={setIdSeat} idSeat={idSeat} confirmRemove={confirmRemove} addFields={addFields} renderSeats={renderSeats} setRenderSeats={setRenderSeats} setNumSeats={setNumSeats} numSeats={numSeats} />
 
                     <SubtitleColor />
 
-                    <Forms handleForm={handleForm} />
+                    {inputFields.map((input, index) => <Forms key={index} submit={submit} input={input} index={index} handleFormChange={handleFormChange} />)}
 
-                    <Button onClick={submit}>{`Reservar assento(s)`}</Button>
+                    {!inputFields.length ? null : <Button onClick={submit}>{`Reservar assento(s)`}</Button>}
 
                     <Footer>
                         <ImgFooter>

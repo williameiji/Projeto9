@@ -1,11 +1,11 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import styled from "styled-components";
 import Footer from "./Footer";
 import TopSelect from "./TopSelect";
-import axios from "axios";
-import loading from "../src/assets/image/loading.gif";
+import loading from "../assets/image/loading.gif";
 import TopBar from "./TopBar";
-import styled from "styled-components";
 
 function Schedule({ weekday, date, showtimes }) {
     return (
