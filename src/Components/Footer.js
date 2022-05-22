@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export default function Footer (props) {
     return (
-        <FooterF className="footer">
+        <FooterF >
             {props.children}
         </FooterF>
     );
@@ -24,5 +24,7 @@ const FooterF = styled.div`
     p {
         margin-left: 85px;
         font-size: 26px;
+        word-wrap: break-word;
+        padding: 0 10px 0 0;
     }
 `
