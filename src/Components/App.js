@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "../assets/css/reset.css";
-import "../assets/css/style.css";
 import Movies from "./Movies";
 import Sections from "./Sections";
 import Seats from "./Seats";

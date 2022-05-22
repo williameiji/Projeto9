@@ -37,20 +37,20 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
 
     const { idSeats } = useParams();
     const [waiting, setWaiting] = useState(false);
-    
 
-    function handleFormChange (index, e) {
+
+    function handleFormChange(index, e) {
         let data = [...inputFields];
         data[index][e.target.name] = e.target.value;
         setInputFields(data);
     }
 
-    function addFields () {
+    function addFields() {
         let newfield = { name: '', cpf: '' }
         setInputFields([...inputFields, newfield]);
     }
 
-    function removeFields (index) {
+    function removeFields(index) {
         let data = [...inputFields];
         data.splice(index, 1);
         setInputFields(data);
@@ -62,6 +62,9 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
                 if (window.confirm("Deseja remover esse assento?") === true) {
                     removeFields(index);
                 }
+            }
+            if (inputFields[i].name.length === 0 && inputFields[i].cpf.length === 0) {
+                removeFields(index);
             }
         }
     }
@@ -81,10 +84,10 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
                 }
 
                 let cpf = inputFields[i].cpf;
-                cpf=cpf.replace(/\D/g,"");
-                cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2");
-                cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2");
-                cpf=cpf.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+                cpf = cpf.replace(/\D/g, "");
+                cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+                cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+                cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
                 cpfNovo.push(cpf);
 
                 config.compradores.push(temp);
@@ -92,7 +95,7 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
                 alert('Dados incorretos!');
             }
         }
-        
+
         let promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", config);
         promise.then(response => {
             history("/sucesso");
@@ -106,12 +109,14 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
                 if (value.isAvailable === false) {
                     return {
                         ...value,
-                        "class": "unvailable"
+                        "background": "#F7C52B",
+                        "border": "1px solid #F7C52B"
                     }
                 } else {
                     return {
                         ...value,
-                        "class": "available"
+                        "background": "#C3CFD9",
+                        "border": "1px solid #808F9D"
                     }
                 }
             });
@@ -131,7 +136,7 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
                 <p className="topSelect">Selecione o(s) assento(s)</p>
             </TopSelect>
 
-            {!waiting ? <img className="loading" src={loading} alt="" /> :
+            {!waiting ? <ImgLoading className="loading" src={loading} alt="" /> :
                 <>
                     <RenderSits setIdSeat={setIdSeat} idSeat={idSeat} confirmRemove={confirmRemove} addFields={addFields} renderSeats={renderSeats} setRenderSeats={setRenderSeats} setNumSeats={setNumSeats} numSeats={numSeats} />
 
@@ -176,6 +181,13 @@ const FormsI = styled.form`
             padding-left: 15px;
         }
     }
+`;
+
+const ImgLoading = styled.img`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 `;
 
 const Button = styled.div`

@@ -47,7 +47,7 @@ export default function Sections({ setSection }) {
                 <p>Selecione o horário</p>
             </TopSelect>
 
-            {!sections.days ? <img className="loading" src={loading} alt="" /> : sections.days.map((sect, index) => <Schedule key={index} weekday={sect.weekday} date={sect.date} showtimes={sect.showtimes} />)}
+            {!sections.days ? <ImgLoading className="loading" src={loading} alt="" /> : sections.days.map((sect, index) => <Schedule key={index} weekday={sect.weekday} date={sect.date} showtimes={sect.showtimes} />)}
 
             <Footer>
                 <ImgFooter>
@@ -68,6 +68,13 @@ const Days = styled.div`
         color: #293845;
         margin-bottom: 5px;
     }
+`;
+
+const ImgLoading = styled.img`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 `;
 
 const Time = styled.div`

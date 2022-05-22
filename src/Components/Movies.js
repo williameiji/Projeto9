@@ -35,7 +35,7 @@ export default function Movies() {
             </TopSelect>
 
             <BodyMovies>
-                {!listMovies.length ? <img className="loading" src={loading} alt="" /> : listMovies.map((img, index) => <Posters key={index} posterImg={img.posterURL} idPoster={img.id} />)}
+                {!listMovies.length ? <ImgLoading className="loading" src={loading} alt="" /> : listMovies.map((img, index) => <Posters key={index} posterImg={img.posterURL} idPoster={img.id} />)}
             </BodyMovies>
         </>
     );
@@ -58,6 +58,13 @@ const PostersMovies = styled.div`
     border-radius: 3px;
     margin-bottom: 20px;
     padding: 5px;
+`;
+
+const ImgLoading = styled.img`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 `;
 
 const ImgPoster = styled.img`
