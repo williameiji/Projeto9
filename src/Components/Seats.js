@@ -61,6 +61,7 @@ export default function Seats({ setIdSeat, idSeat, section, setRenderSeats, rend
             if (inputFields[i].name.length > 0 || inputFields[i].cpf.length > 0) {
                 if (window.confirm("Deseja remover esse assento?") === true) {
                     removeFields(index);
+                    break;
                 }
             }
             if (inputFields[i].name.length === 0 && inputFields[i].cpf.length === 0) {

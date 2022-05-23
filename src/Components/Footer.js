@@ -19,12 +19,9 @@ const FooterF = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 0 0 15px;
 
     p {
-        margin-left: 85px;
+        margin-left: 95px;
         font-size: 26px;
-        word-wrap: break-word;
-        padding: 0 10px 0 0;
     }
-`
+`;
